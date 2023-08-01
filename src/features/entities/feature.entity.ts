@@ -6,48 +6,48 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity('feature')
 export class Feature {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column()
+  @Column('varchar')
   title_uz: string;
 
-  @Column()
+  @Column('varchar')
   title_ru: string;
 
-  @Column()
+  @Column('varchar')
   title_en: string;
 
-  @Column()
+  @Column('text')
   description_uz: string;
 
-  @Column()
+  @Column('text')
   description_ru: string;
 
-  @Column()
+  @Column('text')
   description_en: string;
 
-  @Column()
+  @Column('varchar')
   image: string;
 
-  @Column()
+  @Column('varchar')
   feature_card_title_uz: string;
 
-  @Column()
+  @Column('varchar')
   feature_card_title_ru: string;
 
-  @Column()
+  @Column('varchar')
   feature_card_title_en: string;
 
-  @Column()
+  @Column('varchar')
   feature_card_svg1: string;
 
-  @Column()
+  @Column('varchar')
   feature_card_svg2: string;
 
-  @Column()
+  @Column('varchar')
   feature_card_svg3: string;
 
   @CreateDateColumn()

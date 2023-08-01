@@ -6,21 +6,21 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity('statistics')
 export class Statistic {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column()
+  @Column('int')
   count: number;
 
-  @Column()
+  @Column('varchar')
   title_uz: string;
 
-  @Column()
+  @Column('varchar')
   title_ru: string;
 
-  @Column()
+  @Column('varchar')
   title_en: string;
 
   @CreateDateColumn()

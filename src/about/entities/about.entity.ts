@@ -6,42 +6,42 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity('about')
 export class About {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column('varchar')
   title_uz: string;
 
-  @Column()
+  @Column('varchar')
   title_ru: string;
 
-  @Column()
+  @Column('varchar')
   title_en: string;
 
-  @Column()
+  @Column('text')
   description_uz: string;
 
-  @Column()
+  @Column('text')
   description_ru: string;
 
-  @Column()
+  @Column('text')
   description_en: string;
 
-  @Column()
+  @Column('text')
   video_img: string;
 
-  @Column()
+  @Column('varchar')
   video: string;
 
-  @Column()
+  @Column('varchar')
   logo: string;
 
-  @Column()
+  @Column('varchar')
   address: string;
 
-  @Column()
+  @Column('varchar')
   phone_number: string;
 
   @CreateDateColumn()

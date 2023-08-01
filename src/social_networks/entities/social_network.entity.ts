@@ -6,21 +6,21 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity('social_networks')
 export class SocialNetwork {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column()
+  @Column('varchar')
   name: string;
 
-  @Column()
+  @Column('varchar')
   link: string;
 
-  @Column()
+  @Column('varchar')
   svg: string;
 
-  @Column()
+  @Column('int')
   order: number;
 
   @CreateDateColumn()

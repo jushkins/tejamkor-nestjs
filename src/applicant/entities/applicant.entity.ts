@@ -1,13 +1,19 @@
-import { Column, CreateDateColumn, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
+@Entity('applicant')
 export class Applicant {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column()
+  @Column('varchar')
   full_name: string;
 
-  @Column()
+  @Column('varchar')
   phone_number: string;
 
   @CreateDateColumn()

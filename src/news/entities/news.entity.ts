@@ -6,33 +6,33 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity('news')
 export class News {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column()
+  @Column('varchar')
   image: string;
 
-  @Column()
+  @Column('date')
   date: Date;
 
-  @Column()
+  @Column('varchar')
   title_uz: string;
 
-  @Column()
+  @Column('varchar')
   title_ru: string;
 
-  @Column()
+  @Column('varchar')
   title_en: string;
 
-  @Column()
+  @Column('text')
   description_uz: string;
 
-  @Column()
+  @Column('text')
   description_ru: string;
 
-  @Column()
+  @Column('text')
   description_en: string;
 
   @CreateDateColumn()

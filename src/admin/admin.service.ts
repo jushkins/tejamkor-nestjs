@@ -1,21 +1,28 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException } from '@nestjs/common';
 import { CreateAdminDto } from './dto/create-admin.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Admin } from './entities/admin.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AdminService {
-  create(createAdminDto: CreateAdminDto) {
-    return 'This action adds a new admin';
-  }
+  constructor(
+    @InjectRepository(Admin)
+    private adminRepository: Repository<Admin>,
+  ) {}
+  async login(dto: CreateAdminDto) {
+    const admin = await this.adminRepository.findOneBy({
+      email: dto.email,
+    });
 
-  findAll() {
-    return `This action returns all admin`;
-  }
+    if (!admin) {
+      throw new HttpException('Admin not found', 404);
+    }
 
-  findOne(id: number) {
-    return `This action returns a #${id} admin`;
-  }
+    if (admin.password !== dto.password) {
+      throw new HttpException('Wrong password', 401);
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} admin`;
+    return admin;
   }
 }

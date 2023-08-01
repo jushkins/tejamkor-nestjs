@@ -6,21 +6,21 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity('menu')
 export class Menu {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column()
+  @Column('varchar')
   name_uz: string;
 
-  @Column()
+  @Column('varchar')
   name_ru: string;
 
-  @Column()
+  @Column('varchar')
   name_en: string;
 
-  @Column()
+  @Column('int')
   order: number;
 
   @CreateDateColumn()
