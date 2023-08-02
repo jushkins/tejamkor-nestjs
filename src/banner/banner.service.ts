@@ -1,26 +1,50 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { CreateBannerDto } from './dto/create-banner.dto';
 import { UpdateBannerDto } from './dto/update-banner.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Banner } from './entities/banner.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class BannerService {
-  create(createBannerDto: CreateBannerDto) {
-    return 'This action adds a new banner';
+  constructor(
+    @InjectRepository(Banner) private bannerRepository: Repository<Banner>,
+  ) {}
+  async create(dto: CreateBannerDto) {
+    const newBanner = await this.bannerRepository.create(dto);
+    await this.bannerRepository.save(newBanner);
+    return newBanner;
   }
 
-  findAll() {
-    return `This action returns all banner`;
+  async findAll() {
+    const allBanner = await this.bannerRepository.find();
+    return allBanner;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} banner`;
+  async findOneById(id: number) {
+    const banner = await this.bannerRepository.findOneBy({ id });
+    if (!banner) {
+      throw new HttpException('Banner not found', 404);
+    }
+    return banner;
   }
 
-  update(id: number, updateBannerDto: UpdateBannerDto) {
-    return `This action updates a #${id} banner`;
+  async updateById(id: number, dto: UpdateBannerDto) {
+    const bannerUpdate = await this.bannerRepository.findOneBy({ id });
+    if (!bannerUpdate) {
+      throw new HttpException('Banner not found', 404);
+    }
+    Object.assign(bannerUpdate, dto);
+    await this.bannerRepository.save(bannerUpdate);
+    return bannerUpdate;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} banner`;
+  async removeById(id: number) {
+    const bannerToRemove = await this.bannerRepository.findOneBy({ id });
+    if (!bannerToRemove) {
+      throw new HttpException('Banner not found', 404);
+    }
+    await this.bannerRepository.remove(bannerToRemove);
+    return { message: 'banner is deleted' };
   }
 }

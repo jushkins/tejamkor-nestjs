@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ServiceCardsService } from './service_cards.service';
 import { CreateServiceCardDto } from './dto/create-service_card.dto';
 import { UpdateServiceCardDto } from './dto/update-service_card.dto';
@@ -18,17 +26,20 @@ export class ServiceCardsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.serviceCardsService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.serviceCardsService.findOneById(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateServiceCardDto: UpdateServiceCardDto) {
-    return this.serviceCardsService.update(+id, updateServiceCardDto);
+  update(
+    @Param('id') id: number,
+    @Body() updateServiceCardDto: UpdateServiceCardDto,
+  ) {
+    return this.serviceCardsService.updateById(+id, updateServiceCardDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.serviceCardsService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.serviceCardsService.removeById(+id);
   }
 }

@@ -1,26 +1,53 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { CreateStatisticDto } from './dto/create-statistic.dto';
 import { UpdateStatisticDto } from './dto/update-statistic.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Statistic } from './entities/statistic.entity';
 
 @Injectable()
 export class StatisticsService {
-  create(createStatisticDto: CreateStatisticDto) {
-    return 'This action adds a new statistic';
+  constructor(
+    @InjectRepository(Statistic)
+    private statisticsRepository: Repository<Statistic>,
+  ) {}
+  async create(dto: CreateStatisticDto) {
+    const addStatistics = await this.statisticsRepository.create(dto);
+    await this.statisticsRepository.save(addStatistics);
+    return addStatistics;
   }
 
-  findAll() {
-    return `This action returns all statistics`;
+  async findAll() {
+    const allStatistics = await this.statisticsRepository.find();
+    return allStatistics;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} statistic`;
+  async findOneById(id: number) {
+    const statistics = await this.statisticsRepository.findOneBy({ id });
+    if (!statistics) {
+      throw new HttpException('Statistics info not found', 404);
+    }
+    return statistics;
   }
 
-  update(id: number, updateStatisticDto: UpdateStatisticDto) {
-    return `This action updates a #${id} statistic`;
+  async updateById(id: number, dto: UpdateStatisticDto) {
+    const update = await this.statisticsRepository.findOneBy({
+      id,
+    });
+    if (!update) {
+      throw new HttpException('Info not found', 404);
+    }
+    Object.assign(update, dto);
+    await this.statisticsRepository.save(update);
+    return update;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} statistic`;
+  async removeById(id: number) {
+    const infoToRemove = await this.statisticsRepository.findOneBy({ id });
+    if (!infoToRemove) {
+      throw new HttpException('Info not found', 404);
+    }
+    await this.statisticsRepository.remove(infoToRemove);
+    return { message: 'Info is deleted' };
   }
 }

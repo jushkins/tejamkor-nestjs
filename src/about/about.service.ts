@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { CreateAboutDto } from './dto/create-about.dto';
 import { UpdateAboutDto } from './dto/update-about.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -17,19 +17,34 @@ export class AboutService {
   }
 
   async findAll() {
-    const info = await this.aboutRepository.find();
+    const allInfo = await this.aboutRepository.find();
+    return allInfo;
+  }
+
+  async findOneById(id: number) {
+    const info = await this.aboutRepository.findOneBy({ id: id });
+    if (!info) {
+      throw new HttpException('Info not found', 404);
+    }
     return info;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} about`;
+  async updateById(id: number, dto: UpdateAboutDto) {
+    const newInfo = await this.aboutRepository.findOneBy({ id: id });
+    if (!newInfo) {
+      throw new HttpException('Info not found', 404);
+    }
+    Object.assign(newInfo, dto);
+    await this.aboutRepository.save(newInfo);
+    return newInfo;
   }
 
-  update(id: number, updateAboutDto: UpdateAboutDto) {
-    return `This action updates a #${id} about`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} about`;
+  async removeById(id: number) {
+    const infoToremove = await this.aboutRepository.findOneBy({ id: id });
+    if (!infoToremove) {
+      throw new HttpException('Info not found', 404);
+    }
+    await this.aboutRepository.remove(infoToremove);
+    return { message: 'Info is deleted' };
   }
 }

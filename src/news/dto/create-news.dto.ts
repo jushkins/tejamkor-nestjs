@@ -5,9 +5,9 @@ export class CreateNewsDto {
   @IsOptional()
   image: string;
 
-  @IsDate()
+  @IsString()
   @IsOptional()
-  date: Date;
+  date: string;
 
   @IsString()
   @IsOptional()
