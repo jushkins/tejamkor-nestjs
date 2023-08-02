@@ -1,20 +1,23 @@
 import { Module } from '@nestjs/common';
-import { AdminModule } from './admin/admin.module';
-import { ApplicantModule } from './applicant/applicant.module';
-import { MenuModule } from './menu/menu.module';
-import { BannerModule } from './banner/banner.module';
-import { ServiceCardsModule } from './service_cards/service_cards.module';
-import { FeaturesModule } from './features/features.module';
-import { AboutModule } from './about/about.module';
-import { SocialNetworksModule } from './social_networks/social_networks.module';
-import { NewsModule } from './news/news.module';
-import { StatisticsModule } from './statistics/statistics.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import Dbconfig from './common/orm.tsconfig';
+import { ApplicantModule } from './modules/applicant/applicant.module';
+import { MenuModule } from './modules/menu/menu.module';
+import { AboutModule } from './modules/about/about.module';
+import { AdminModule } from './modules/admin/admin.module';
+import { BannerModule } from './modules/banner/banner.module';
+import { FeaturesModule } from './modules/features/features.module';
+import { NewsModule } from './modules/news/news.module';
+import { ServiceCardsModule } from './modules/service_cards/service_cards.module';
+import { SocialNetworksModule } from './modules/social_networks/social_networks.module';
+import { StatisticsModule } from './modules/statistics/statistics.module';
 import 'reflect-metadata';
-
+import Dbconfig from './common/configs/typeorm.config';
+import { MediaModule } from './modules/media/media.module';
+import { ConfigModule } from '@nestjs/config';
+import { TelegramModule } from './modules/telegram/telegram.module';
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(Dbconfig),
     ApplicantModule,
     MenuModule,
@@ -26,6 +29,8 @@ import 'reflect-metadata';
     NewsModule,
     StatisticsModule,
     AdminModule,
+    MediaModule,
+    TelegramModule,
   ],
 })
 export class AppModule {}
