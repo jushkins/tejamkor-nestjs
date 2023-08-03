@@ -14,7 +14,6 @@ import 'reflect-metadata';
 import Dbconfig from './common/configs/typeorm.config';
 import { MediaModule } from './modules/media/media.module';
 import { ConfigModule } from '@nestjs/config';
-import { TelegramModule } from './modules/telegram/telegram.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -30,7 +29,6 @@ import { TelegramModule } from './modules/telegram/telegram.module';
     StatisticsModule,
     AdminModule,
     MediaModule,
-    TelegramModule,
   ],
 })
 export class AppModule {}

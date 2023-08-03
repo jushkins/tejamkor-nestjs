@@ -16,7 +16,7 @@ export class AdminService {
     });
 
     if (!admin) {
-      throw new HttpException('Admin not found', 404);
+      throw new HttpException('Wrong email', 404);
     }
 
     if (admin.password !== dto.password) {
