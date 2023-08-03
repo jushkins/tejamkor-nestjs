@@ -21,6 +21,10 @@ $ yarn run start:dev
 $ yarn run start:prod
 ```
 
+## API documentation
+
+Swagger - [link](http://localhost:4000/api#/)
+
 ## Stay in touch
 
 - Author - [Jushkin Saparmatov](https://github.com/jushkins/)
