@@ -11,16 +11,11 @@ export class MenuService {
     @InjectRepository(Menu) private menuRepository: Repository<Menu>,
   ) {}
   async create(dto: CreateMenuDto) {
-    const lastMenu = await this.menuRepository.findOne({
-      where: {},
-      order: { id: 'DESC' },
-    });
+    const maxOrder = await this.menuRepository.maximum('order');
 
-    const newMenuOrder = lastMenu ? lastMenu.order + 1 : 1;
-
-    const newMenu = await this.menuRepository.create({
+    const newMenu = this.menuRepository.create({
       ...dto,
-      order: newMenuOrder,
+      order: maxOrder + 1,
     });
 
     await this.menuRepository.save(newMenu);
@@ -43,11 +38,38 @@ export class MenuService {
 
   async updateById(id: number, dto: UpdateMenuDto) {
     const menuUpdate = await this.menuRepository.findOneBy({ id });
+
     if (!menuUpdate) {
       throw new HttpException('Info not found', 404);
     }
-    Object.assign(menuUpdate, dto);
+
+    const oldOrder = menuUpdate.order;
+
+    if (oldOrder !== dto.order) {
+      const allMenus = await this.menuRepository.find();
+
+      const menusToUpdate = allMenus.filter((menu) => {
+        if (oldOrder < dto.order) {
+          return menu.order > oldOrder && menu.order <= dto.order;
+        } else {
+          return menu.order >= dto.order && menu.order < oldOrder;
+        }
+      });
+
+      for (const menu of menusToUpdate) {
+        if (oldOrder < dto.order) {
+          menu.order -= 1;
+        } else {
+          menu.order += 1;
+        }
+        await this.menuRepository.save(menu);
+      }
+
+      menuUpdate.order = dto.order;
+    }
+
     await this.menuRepository.save(menuUpdate);
+
     return menuUpdate;
   }
 

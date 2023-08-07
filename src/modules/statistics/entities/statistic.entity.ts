@@ -23,6 +23,9 @@ export class Statistic {
   @Column('varchar')
   title_en: string;
 
+  @Column('int')
+  order: number;
+
   @CreateDateColumn()
   created_at: Date;
 

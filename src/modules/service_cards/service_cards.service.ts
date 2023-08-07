@@ -12,9 +12,16 @@ export class ServiceCardsService {
     private serviceCardRepository: Repository<ServiceCard>,
   ) {}
   async create(dto: CreateServiceCardDto) {
-    const addServiceCard = await this.serviceCardRepository.create(dto);
-    await this.serviceCardRepository.save(addServiceCard);
-    return addServiceCard;
+    const maxOrder = await this.serviceCardRepository.maximum('order');
+
+    const newServiceCard = this.serviceCardRepository.create({
+      ...dto,
+      order: maxOrder + 1,
+    });
+
+    await this.serviceCardRepository.save(newServiceCard);
+
+    return newServiceCard;
   }
 
   async findAll() {
@@ -31,13 +38,40 @@ export class ServiceCardsService {
   }
 
   async updateById(id: number, dto: UpdateServiceCardDto) {
-    const cardInfoUpdate = await this.serviceCardRepository.findOneBy({ id });
-    if (!cardInfoUpdate) {
+    const cardUpdate = await this.serviceCardRepository.findOneBy({ id });
+
+    if (!cardUpdate) {
       throw new HttpException('Info not found', 404);
     }
-    Object.assign(cardInfoUpdate, dto);
-    await this.serviceCardRepository.save(cardInfoUpdate);
-    return cardInfoUpdate;
+
+    const oldOrder = cardUpdate.order;
+
+    if (oldOrder !== dto.order) {
+      const allCards = await this.serviceCardRepository.find();
+
+      const cardToUpdate = allCards.filter((menu) => {
+        if (oldOrder < dto.order) {
+          return menu.order > oldOrder && menu.order <= dto.order;
+        } else {
+          return menu.order >= dto.order && menu.order < oldOrder;
+        }
+      });
+
+      for (const menu of cardToUpdate) {
+        if (oldOrder < dto.order) {
+          menu.order -= 1;
+        } else {
+          menu.order += 1;
+        }
+        await this.serviceCardRepository.save(menu);
+      }
+
+      cardUpdate.order = dto.order;
+    }
+
+    await this.serviceCardRepository.save(cardUpdate);
+
+    return cardUpdate;
   }
 
   async removeById(id: number) {

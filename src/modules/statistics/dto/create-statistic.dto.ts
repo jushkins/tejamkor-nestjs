@@ -21,4 +21,9 @@ export class CreateStatisticDto {
   @IsString()
   @IsOptional()
   title_en: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  order: number;
 }
