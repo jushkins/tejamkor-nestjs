@@ -14,10 +14,15 @@ import { StatisticsModule } from './modules/statistics/statistics.module';
 import Dbconfig from './common/configs/typeorm.config';
 import { MediaModule } from './modules/media/media.module';
 import { ConfigModule } from '@nestjs/config';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(Dbconfig),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+    }),
     ApplicantModule,
     MenuModule,
     BannerModule,

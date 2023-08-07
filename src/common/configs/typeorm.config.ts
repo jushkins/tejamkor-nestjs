@@ -31,8 +31,8 @@ const Dbconfig: TypeOrmModuleOptions = {
   ],
   synchronize: false,
   migrationsRun: false,
-  logger: 'advanced-console',
-  logging: 'all',
+  // logger: 'advanced-console',
+  // logging: 'all',
 };
 
 export default Dbconfig;
