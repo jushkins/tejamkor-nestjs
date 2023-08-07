@@ -10,6 +10,5 @@ export class CreateAdminDto {
   @ApiProperty({ example: 'George.1o1@' })
   @IsNotEmpty()
   @IsString()
-  @IsStrongPassword()
   password: string;
 }

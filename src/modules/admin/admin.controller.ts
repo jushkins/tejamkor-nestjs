@@ -1,7 +1,7 @@
-import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('ADMIN AUTH')
 @ApiBearerAuth()
@@ -11,7 +11,6 @@ export class AdminController {
 
   @Post('login')
   @ApiOperation({ summary: 'Admin login' })
-  @ApiBody({ type: CreateAdminDto })
   login(@Body() dto: CreateAdminDto) {
     return this.adminService.login(dto);
   }

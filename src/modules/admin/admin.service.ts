@@ -14,6 +14,7 @@ export class AdminService {
     private jwt: JwtService,
     private config: ConfigService,
   ) {}
+
   async login(dto: CreateAdminDto) {
     const admin = await this.adminRepository.findOneBy({
       email: dto.email,
@@ -28,6 +29,7 @@ export class AdminService {
     }
     return this.signToken(admin.id, admin.email);
   }
+
   async signToken(
     id: number,
     email: string,

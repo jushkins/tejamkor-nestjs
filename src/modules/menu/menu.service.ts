@@ -11,8 +11,20 @@ export class MenuService {
     @InjectRepository(Menu) private menuRepository: Repository<Menu>,
   ) {}
   async create(dto: CreateMenuDto) {
-    const newMenu = await this.menuRepository.create(dto);
+    const lastMenu = await this.menuRepository.findOne({
+      where: {},
+      order: { id: 'DESC' },
+    });
+
+    const newMenuOrder = lastMenu ? lastMenu.order + 1 : 1;
+
+    const newMenu = await this.menuRepository.create({
+      ...dto,
+      order: newMenuOrder,
+    });
+
     await this.menuRepository.save(newMenu);
+
     return newMenu;
   }
 

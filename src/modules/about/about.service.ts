@@ -22,7 +22,7 @@ export class AboutService {
   }
 
   async findOneById(id: number) {
-    const info = await this.aboutRepository.findOneBy({ id: id });
+    const info = await this.aboutRepository.findOneBy({ id });
     if (!info) {
       throw new HttpException('Info not found', 404);
     }
@@ -30,7 +30,7 @@ export class AboutService {
   }
 
   async updateById(id: number, dto: UpdateAboutDto) {
-    const newInfo = await this.aboutRepository.findOneBy({ id: id });
+    const newInfo = await this.aboutRepository.findOneBy({ id });
     if (!newInfo) {
       throw new HttpException('Info not found', 404);
     }
@@ -40,7 +40,7 @@ export class AboutService {
   }
 
   async removeById(id: number) {
-    const infoToremove = await this.aboutRepository.findOneBy({ id: id });
+    const infoToremove = await this.aboutRepository.findOneBy({ id });
     if (!infoToremove) {
       throw new HttpException('Info not found', 404);
     }
